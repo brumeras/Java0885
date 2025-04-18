@@ -8,6 +8,7 @@ package Entity;
 import Main.Game;
 import Main.GamePanel;
 import Main.KeyHandler;
+import Main.Pseudokodas;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -16,6 +17,7 @@ import java.io.IOException;
 
 public class Player extends Entity {
 
+    private Pseudokodas ps;
     //Sukuriamas Player objektas, kuris turi nuorodas į:
     //Žaidimo pagrindinį langą
     GamePanel gp;
@@ -53,6 +55,9 @@ public class Player extends Entity {
         setDefaultValues();
         getPlayerImage();
 
+    }
+    public void setPs(Pseudokodas ps) { // Metodas ps priskyrimui
+        this.ps = ps;
     }
     public void setDefaultValues()
     {
@@ -172,8 +177,11 @@ public class Player extends Entity {
                     gp.obj[i] = null;
                     System.out.println("You hit a deadly flower!");
 
-                    //Baigiasi žaidimas, grįžtama į pradžią.
-                    Game.main(null);
+                    if (ps != null) {
+                        new Thread(() -> ps.enableTerminalControl()).start();
+                    } else {
+                        System.err.println("ERROR: ps objektas nebuvo inicializuotas!");
+                    }
                     break;
             }
         }
@@ -233,6 +241,28 @@ public class Player extends Entity {
         //screenX ir screenY-pozicija, kur paveikslėlis turi būti piešiamas ekrane.
         //null-nurodo, kad naudojamas standartinis vaizdo stebėjimas.
         g2g.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+    }
+    public void movePlayer(int a)
+    {
+        collisionOn = false;
+        gp.cChecker.checkTile(this);
+
+        //Patikrina, ar įvyko kolizija
+        int objIndex = gp.cChecker.checkObject(this,true);
+        pickUpObject(objIndex);
+
+        //Jei kolizija neįvyko, veikėjas gali toliau eiti.
+        if(collisionOn == false)
+        {
+            switch(a)
+            {
+                case 1: worldY += speed; break;
+                case 2: worldY -= speed; break;
+                case 3: worldX += speed; break;
+                case 4: worldX -= speed; break;
+
+            }
+        }
     }
 
 }

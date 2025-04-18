@@ -6,6 +6,7 @@
 package Main;
 
 import object.DeadlyFlower;
+import object.Gelbetoja;
 import object.ObjKey;
 
 public class AssetSetter
@@ -60,5 +61,13 @@ public class AssetSetter
         gp.obj[7]= new DeadlyFlower();
         gp.obj[7].worldX = 11 * gp.tileSize;
         gp.obj[7].worldY = 13 * gp.tileSize;
+
+        gp.obj[8]= new Gelbetoja();
+        gp.obj[8].worldX = 15 * gp.tileSize;
+        gp.obj[8].worldY = 22 * gp.tileSize;
+
+        gp.obj[9]= new Gelbetoja();
+        gp.obj[9].worldX = 23 * gp.tileSize;
+        gp.obj[9].worldY = 16 * gp.tileSize;
     }
 }

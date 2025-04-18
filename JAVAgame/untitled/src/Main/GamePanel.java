@@ -84,28 +84,54 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     private void processCommand(String input) {
-        if (input == null || input.isEmpty()) {
+        if (input == null || input.isEmpty()) return;
+
+        String[] parts = input.split(" ");
+        if (parts.length < 1 || parts.length > 2) {
+            JOptionPane.showMessageDialog(this, "Netinkama komanda! Naudokite v/a/d/k [kartų skaičius].");
             return;
         }
 
-        switch (input) {
-            case "a":
-                player.movePlayer(1);
-                break;
-            case "w":
-                player.movePlayer(2);
-                break;
-            case "s":
-                player.movePlayer(3);
-                break;
-            case "d":
-                player.movePlayer(4);
-                break;
-            default:
-                JOptionPane.showMessageDialog(this, "Netinkama komanda! Naudokite a/w/s/d.");
+        String command = parts[0];
+        int times = 1;
+
+        if (parts.length == 2) {
+            try {
+                times = Integer.parseInt(parts[1]);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Kartų skaičius turi būti sveikas skaičius!");
+                return;
+            }
         }
-        repaint();
+
+        for (int i = 0; i < times; i++)
+        {
+            // Pirmiausia atnaujiname `collisionOn`
+            cChecker.checkTile(player); // Nebūtina grąžinti boolean, bet atnaujina `player.collisionOn`
+
+            if (player.collisionOn) { // Jei įvyko kolizija, sustabdyti ciklą
+                JOptionPane.showMessageDialog(null, "Susidūrėte su kliūtimi! Judėjimas sustabdytas.");
+                break;
+            }
+
+            switch (command) {
+                case "v": player.movePlayer(1); break;
+                case "a": player.movePlayer(2); break;
+                case "d": player.movePlayer(3); break;
+                case "k": player.movePlayer(4); break;
+                default:
+                    JOptionPane.showMessageDialog(null, "Netinkama komanda! Naudokite v/a/d/k.");
+                    return;
+            }
+
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
+
 
     public void setupGame() {
         aSetter.setObject();

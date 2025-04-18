@@ -242,27 +242,42 @@ public class Player extends Entity {
         //null-nurodo, kad naudojamas standartinis vaizdo stebėjimas.
         g2g.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
     }
-    public void movePlayer(int a)
-    {
-        collisionOn = false;
-        gp.cChecker.checkTile(this);
+    public void movePlayer(int a) {
+        collisionOn = false; // Atstatome kolizijos būseną kiekvieno žingsnio pradžioje
+        gp.cChecker.checkTile(this); // Tikriname, ar veikėjas susiduria su kliūtimi
 
-        //Patikrina, ar įvyko kolizija
-        int objIndex = gp.cChecker.checkObject(this,true);
+        int objIndex = gp.cChecker.checkObject(this, true);
         pickUpObject(objIndex);
 
-        //Jei kolizija neįvyko, veikėjas gali toliau eiti.
-        if(collisionOn == false)
-        {
-            switch(a)
-            {
-                case 1: worldY += speed; break;
-                case 2: worldY -= speed; break;
-                case 3: worldX += speed; break;
-                case 4: worldX -= speed; break;
+        if (!collisionOn) {
+            // Jei kolizijos nėra, veikėjas juda pasirinkta kryptimi
+            switch (a) {
+                case 1: worldY -= (speed * 2); break; // Į viršų
+                case 2: worldY += (speed * 2); break; // Žemyn
+                case 3: worldX += (speed * 2); break; // Į dešinę
+                case 4: worldX -= (speed * 2); break; // Į kairę
+            }
+        } else {
+            // Jei veikėjas susiduria su kliūtimi, leidžiama pajudėti atgal
+            switch (a) {
+                case 1: worldY += speed; break; // Jei negali judėti į viršų, pastumiamas žemyn
+                case 2: worldY -= speed; break; // Jei negali judėti žemyn, pastumiamas aukštyn
+                case 3: worldX -= speed; break; // Jei negali judėti į dešinę, pastumiamas į kairę
+                case 4: worldX += speed; break; // Jei negali judėti į kairę, pastumiamas į dešinę
+            }
 
+            System.out.println("Susidūrėte su kliūtimi! Bandykite kita kryptimi.");
+
+            // Vėl tikriname koliziją po pastūmimo
+            gp.cChecker.checkTile(this);
+            if (!collisionOn) {
+                System.out.println("Kolizija panaikinta, galima judėti toliau.");
+            } else {
+                collisionOn = false; // Jei vis dar užstrigęs, rankiniu būdu panaikiname koliziją
             }
         }
+
+        gp.repaint(); // Atnaujina grafiką po judėjimo
     }
 
 }

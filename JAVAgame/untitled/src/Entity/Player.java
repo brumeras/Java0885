@@ -218,6 +218,18 @@ public class Player extends Entity {
                     gp.eManager.lighting = null; // Išjungia Lighting efektą
                     gp.obj[i] = null; // Pašalina gėlę
                     break;
+                    case "EnergyBooster":
+                        gp.obj[i] = null;
+                        speed += 2; // **Padidina veikėjo greitį**
+                        break;
+                case "EnergyTaker":
+                    gp.obj[i] = null;
+                    if (speed > 2) { // **Neleidžiame greičio nukristi iki 0**
+                        speed -= 2; // **Sumažina veikėjo greitį**
+                    } else {
+                        System.out.println("Greitis jau minimalus!");
+                    }
+                    break;
             }
         }
     }

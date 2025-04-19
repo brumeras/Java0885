@@ -20,6 +20,9 @@ public class AssetSetter {
         index = generateObjects(index, 2, "HelperFlower");
         index = generateObjects(index, 4, "NightFlower");
         index = generateObjects(index, 4, "SunFlower");
+        index = generateObjects(index, 5, "EnergyBooster");
+        index = generateObjects(index, 5, "EnergyTaker");
+
     }
 
     private int generateObjects(int startIndex, int numObjects, String type) {
@@ -46,6 +49,8 @@ public class AssetSetter {
                 case "HelperFlower": gp.obj[startIndex] = new Gelbetoja(); break;
                 case "NightFlower": gp.obj[startIndex] = new NightFlower(); break;
                 case "SunFlower": gp.obj[startIndex] = new SunFlower(); break;
+                case "EnergyBooster": gp.obj[startIndex] = new EnergyBooster(); break;
+                case "EnergyTaker": gp.obj[startIndex] = new EnergyTaker(); break;
             }
 
             gp.obj[startIndex].worldX = x;

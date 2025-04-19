@@ -90,6 +90,15 @@ public class TileManager
             case 4:
                 loadMap("/maps/word04.txt");
                 break;
+            case 5:
+                loadMap("/maps/word05.txt");
+                break;
+                case 6:
+                    loadMap("/maps/word06.txt");
+                    break;
+                    case 7:
+                        loadMap("/maps/word01.txt");
+                        break;
             default:
                 System.out.println("No more levels!");
                 return;

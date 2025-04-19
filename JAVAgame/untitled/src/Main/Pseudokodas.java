@@ -5,7 +5,7 @@ import Entity.Player;
 import javax.swing.*;
 
 public class Pseudokodas {
-    private boolean controllingPlayer = false;
+    public boolean controllingPlayer = false;
     private Player player;
 
     // Konstruktorius, priimantis Player objektą

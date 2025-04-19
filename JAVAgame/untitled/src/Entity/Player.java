@@ -183,6 +183,15 @@ public class Player extends Entity {
                         System.err.println("ERROR: ps objektas nebuvo inicializuotas!");
                     }
                     break;
+                case "HelperFlower":
+                    System.out.println("Palietėte Helper Flower! Grįžtame prie klaviatūros valdymo.");
+
+                    if (ps != null) {
+                        ps.controllingPlayer = false; // Išjungia pseudokodo valdymą
+                    }
+
+                    gp.obj[i] = null; // Pašalina gėlę iš žaidimo
+                    break;
             }
         }
     }

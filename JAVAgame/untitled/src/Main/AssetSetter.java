@@ -1,73 +1,59 @@
-/**
- * Ši klasė sukuria objektus, kuriuos veikėjas rinks.
- * @author Emilija Sankauskaitė, Programų sistemos VU, 5 grupė
- */
-
 package Main;
-
+import Main.GamePanel;
 import object.DeadlyFlower;
 import object.Gelbetoja;
+import object.NightFlower;
 import object.ObjKey;
 
-public class AssetSetter
-{
+import java.util.Random;
+
+public class AssetSetter {
     GamePanel gp;
-    public AssetSetter(GamePanel gp)
-    {
-        this.gp=gp;
+    Random rand = new Random();
+
+    public AssetSetter(GamePanel gp) {
+        this.gp = gp;
     }
-    public void setObject()
-    {
-        gp.obj[0]= new ObjKey();
-        gp.obj[0].worldX = 23 * gp.tileSize;
-        gp.obj[0].worldY = 7 * gp.tileSize;
 
-        gp.obj[1]= new ObjKey();
-        gp.obj[1].worldX = 10 * gp.tileSize;
-        gp.obj[1].worldY = 9 * gp.tileSize;
+    public void setObjects() {
+        int index = 0; // Objektų masyvo indeksas
 
-        gp.obj[2]= new ObjKey();
-        gp.obj[2].worldX = 15 * gp.tileSize;
-        gp.obj[2].worldY = 22 * gp.tileSize;
+        index = generateObjects(index, 10, "ObjKey");        // Generuoja 5 raktus
+        index = generateObjects(index, 3, "DeadlyFlower");  // Generuoja 3 pavojingas gėlytes
+        index = generateObjects(index, 2, "HelperFlower");
+        index = generateObjects(index, 4, "NightFlower");
+    }
 
-        gp.obj[3]= new ObjKey();
-        gp.obj[3].worldX = 23 * gp.tileSize;
-        gp.obj[3].worldY = 16 * gp.tileSize;
+    private int generateObjects(int startIndex, int numObjects, String type) {
+        for (int i = 0; i < numObjects; i++) {
+            boolean validPosition = false;
+            int x = 0, y = 0;
 
-        gp.obj[4]= new ObjKey();
-        gp.obj[4].worldX = 11 * gp.tileSize;
-        gp.obj[4].worldY = 22 * gp.tileSize;
+            while (!validPosition) {
+                x = rand.nextInt(50) * gp.tileSize;
+                y = rand.nextInt(50) * gp.tileSize;
 
-        gp.obj[5]= new ObjKey();
-        gp.obj[5].worldX = 11 * gp.tileSize;
-        gp.obj[5].worldY = 36 * gp.tileSize;
+                int col = x / gp.tileSize;
+                int row = y / gp.tileSize;
+                int tileNum = gp.tileM.mapTileNum[col][row];
 
-        gp.obj[6]= new ObjKey();
-        gp.obj[6].worldX = 11 * gp.tileSize;
-        gp.obj[6].worldY = 22 * gp.tileSize;
+                if (!gp.tileM.tile[tileNum].collision) {
+                    validPosition = true;
+                }
+            }
 
-        gp.obj[7]= new DeadlyFlower();
-        gp.obj[7].worldX = 45 * gp.tileSize;
-        gp.obj[7].worldY = 10* gp.tileSize;
+            switch (type) {
+                case "ObjKey": gp.obj[startIndex] = new ObjKey(); break;
+                case "DeadlyFlower": gp.obj[startIndex] = new DeadlyFlower(); break;
+                case "HelperFlower": gp.obj[startIndex] = new Gelbetoja(); break;
+                case "NightFlower": gp.obj[startIndex] = new NightFlower(); break;
+            }
 
-        gp.obj[8]= new DeadlyFlower();
-        gp.obj[8].worldX = 10 * gp.tileSize;
-        gp.obj[8].worldY = 46* gp.tileSize;
+            gp.obj[startIndex].worldX = x;
+            gp.obj[startIndex].worldY = y;
 
-        gp.obj[7]= new DeadlyFlower();
-        gp.obj[7].worldX = 45 * gp.tileSize;
-        gp.obj[7].worldY =  3* gp.tileSize;
-
-        gp.obj[7]= new DeadlyFlower();
-        gp.obj[7].worldX = 11 * gp.tileSize;
-        gp.obj[7].worldY = 13 * gp.tileSize;
-
-        gp.obj[8]= new Gelbetoja();
-        gp.obj[8].worldX = 15 * gp.tileSize;
-        gp.obj[8].worldY = 22 * gp.tileSize;
-
-        gp.obj[9]= new Gelbetoja();
-        gp.obj[9].worldX = 23 * gp.tileSize;
-        gp.obj[9].worldY = 16 * gp.tileSize;
+            startIndex++; // Padidina indeksą, kad objektai neperrašytų vienas kito
+        }
+        return startIndex; // Grąžina atnaujintą indeksą kitam objektų tipui
     }
 }

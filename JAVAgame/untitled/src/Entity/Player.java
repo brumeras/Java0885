@@ -9,6 +9,7 @@ import Main.Game;
 import Main.GamePanel;
 import Main.KeyHandler;
 import Main.Pseudokodas;
+import Enviroment.EnviromentManager;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -31,12 +32,13 @@ public class Player extends Entity {
 
     //Surinktų gėlyčių skaičiavimo kintamasis
     public int hasFlower = 0;
+    public int superFlower = 0;
 
     //Player konstruktorius
     public Player(GamePanel gp, KeyHandler keyH)
     {
         //Priskiriama žaidimo panelė ir klaviatūros valdymo klasė Player objektui.
-        this.gp=gp;
+        this.gp = gp;
         this.keyH=keyH;
 
         screenX = gp.screenWidth/2 -(gp.tileSize/2);
@@ -184,6 +186,7 @@ public class Player extends Entity {
                     }
                     break;
                 case "HelperFlower":
+                    superFlower++;
                     System.out.println("Palietėte Helper Flower! Grįžtame prie klaviatūros valdymo.");
 
                     if (ps != null) {
@@ -191,6 +194,18 @@ public class Player extends Entity {
                     }
 
                     gp.obj[i] = null; // Pašalina gėlę iš žaidimo
+                    if(superFlower==1)
+                    {
+                        gp.level++;
+                        gp.increaseLevel(gp.level);
+                        superFlower = 0;
+                        setDefaultValues();
+                    }
+                    break;
+                case "NightFlower":
+                    System.out.println("Palietėte NightFlower! Uždedamas tamsos efektas.");
+                    gp.eManager.setup(); // Įjungia Lighting efektą
+                    gp.obj[i] = null; // Pašalina gėlę
                     break;
             }
         }

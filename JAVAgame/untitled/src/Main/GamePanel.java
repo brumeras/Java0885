@@ -1,6 +1,7 @@
 package Main;
 
 import Entity.Player;
+import Enviroment.EnviromentManager;
 import object.SuperObject;
 import tile.TileManager;
 
@@ -35,9 +36,10 @@ public class GamePanel extends JPanel implements Runnable {
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
     public Player player;
-    public SuperObject obj[] = new SuperObject[10];
+    public SuperObject obj[] = new SuperObject[20];
 
     Pseudokodas ps;
+    public EnviromentManager eManager;
 
     // Pridedame GUI komponentus
     private JTextField commandInput;
@@ -56,6 +58,7 @@ public class GamePanel extends JPanel implements Runnable {
         // Sukuriame Pseudokodas objektą ir priskiriame jį Player klasei
         ps = new Pseudokodas(player);
         player.setPs(ps);
+        eManager = new EnviromentManager(this);
 
         setupGame();
         setupGUI();
@@ -134,7 +137,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 
     public void setupGame() {
-        aSetter.setObject();
+        aSetter.setObjects();
+        //eManager.setup();
     }
 
     public void startGameThread() {
@@ -184,8 +188,9 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
 
+        eManager.draw(g2);
         player.draw(g2);
-        g2.setColor(Color.BLACK);
+        g2.setColor(new Color(0x75A134));
         g2.setFont(new Font("Arial", Font.BOLD, 20));
         g2.drawString("Level: " + level, 20, 40);
         g2.dispose();
@@ -193,6 +198,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void increaseLevel(int level) {
         tileM.loadLevel(level);
-        aSetter.setObject();
+        aSetter.setObjects(); // Naudokime naują metodo pavadinimą
+
     }
 }

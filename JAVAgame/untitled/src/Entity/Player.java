@@ -18,6 +18,7 @@ import java.io.IOException;
 
 public class Player extends Entity {
 
+
     private Pseudokodas ps;
     //Sukuriamas Player objektas, kuris turi nuorodas į:
     //Žaidimo pagrindinį langą
@@ -33,6 +34,7 @@ public class Player extends Entity {
     //Surinktų gėlyčių skaičiavimo kintamasis
     public int hasFlower = 0;
     public int superFlower = 0;
+    public boolean canMove = true; // Pradinė būsena: veikėjas gali judėti
 
     //Player konstruktorius
     public Player(GamePanel gp, KeyHandler keyH)
@@ -94,6 +96,9 @@ public class Player extends Entity {
     }
     public void update()
     {
+        if (!canMove) {
+            return; // Jei veikėjas užrakintas, visiškai blokuojame judėjimą
+        }
         if(keyH.upPressed==true || keyH.downPressed==true || keyH.leftPressed==true || keyH.rightPressed==true)
         {
             if(keyH.upPressed == true)
@@ -175,17 +180,17 @@ public class Player extends Entity {
                     break;
 
                 case "DeadlyFlower":
-                    hasFlower = 0;
+                    System.out.println("Palietėte nuodingą gėlę! Veikėjas sustoja ir dabar valdomas pseudokodu.");
                     gp.obj[i] = null;
-                    System.out.println("You hit a deadly flower!");
-
+                    canMove = false; // **Blokuojame WASD**
                     if (ps != null) {
-                        new Thread(() -> ps.enableTerminalControl()).start();
+                        new Thread(() -> ps.enableTerminalControl()).start(); // **Aktyvuojamas pseudokodas**
                     } else {
                         System.err.println("ERROR: ps objektas nebuvo inicializuotas!");
                     }
                     break;
                 case "HelperFlower":
+                    canMove = true;
                     superFlower++;
                     System.out.println("Palietėte Helper Flower! Grįžtame prie klaviatūros valdymo.");
 
@@ -205,6 +210,12 @@ public class Player extends Entity {
                 case "NightFlower":
                     System.out.println("Palietėte NightFlower! Uždedamas tamsos efektas.");
                     gp.eManager.setup(); // Įjungia Lighting efektą
+                    gp.obj[i] = null; // Pašalina gėlę
+                    break;
+
+                case "SunFlower":
+                    System.out.println("Palietėte SunFlower! Išjungiamas nakties režimas.");
+                    gp.eManager.lighting = null; // Išjungia Lighting efektą
                     gp.obj[i] = null; // Pašalina gėlę
                     break;
             }

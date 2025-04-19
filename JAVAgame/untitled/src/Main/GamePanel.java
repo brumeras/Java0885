@@ -36,7 +36,7 @@ public class GamePanel extends JPanel implements Runnable {
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
     public Player player;
-    public SuperObject obj[] = new SuperObject[20];
+    public SuperObject obj[] = new SuperObject[30];
 
     Pseudokodas ps;
     public EnviromentManager eManager;

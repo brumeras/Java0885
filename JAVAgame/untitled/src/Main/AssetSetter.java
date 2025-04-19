@@ -1,9 +1,6 @@
 package Main;
 import Main.GamePanel;
-import object.DeadlyFlower;
-import object.Gelbetoja;
-import object.NightFlower;
-import object.ObjKey;
+import object.*;
 
 import java.util.Random;
 
@@ -22,6 +19,7 @@ public class AssetSetter {
         index = generateObjects(index, 3, "DeadlyFlower");  // Generuoja 3 pavojingas gėlytes
         index = generateObjects(index, 2, "HelperFlower");
         index = generateObjects(index, 4, "NightFlower");
+        index = generateObjects(index, 4, "SunFlower");
     }
 
     private int generateObjects(int startIndex, int numObjects, String type) {
@@ -47,6 +45,7 @@ public class AssetSetter {
                 case "DeadlyFlower": gp.obj[startIndex] = new DeadlyFlower(); break;
                 case "HelperFlower": gp.obj[startIndex] = new Gelbetoja(); break;
                 case "NightFlower": gp.obj[startIndex] = new NightFlower(); break;
+                case "SunFlower": gp.obj[startIndex] = new SunFlower(); break;
             }
 
             gp.obj[startIndex].worldX = x;

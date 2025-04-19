@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class EnviromentManager {
     GamePanel gp; // Naudojame GamePanel tiesiogiai
-    Lighting lighting;
+    public Lighting lighting;
 
     public EnviromentManager(GamePanel gp) { // Perdavimo būdas pakeistas į GamePanel
         this.gp = gp;
